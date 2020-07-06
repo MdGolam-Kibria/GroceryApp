@@ -16,7 +16,9 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".view.ResisterSellerActivity"></activity>
+        <activity android:name=".view.MainUserActivity"></activity>
+        <activity android:name=".view.MainSellerActivity" />
+        <activity android:name=".view.ResisterSellerActivity" />
         <activity android:name=".view.ForgotPasswordActivity" />
         <activity android:name=".view.ResisterUserActivity" />
         <activity android:name=".view.LoginActivity" />

@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,18 +24,30 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.widget.Toast;
 
 import com.example.groceryapp.R;
 import com.example.groceryapp.commands.ResisterUserActivityClicks;
 import com.example.groceryapp.databinding.ActivityResisterUserBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class ResisterUserActivity extends AppCompatActivity implements LocationListener {
-    ActivityResisterUserBinding activityResisterUserBinding;
+    ActivityResisterUserBinding binding;
     //permission constants
     public static final int LOCATION_REQUEST_CODE = 100;
     public static final int CAMERA_REQUEST_CODE = 200;
@@ -50,17 +63,23 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
     private Uri image_uri;
     private double latitude,longitude;
     private LocationManager locationManager;
+    private FirebaseAuth firebaseAuth;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_resister_user);
-        activityResisterUserBinding = DataBindingUtil.setContentView(this, R.layout.activity_resister_user);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_resister_user);
         //init permission arrays
         locationPermissions =  new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
         cameraPermissions =  new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions =  new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        activityResisterUserBinding.setClickHandle(new ResisterUserActivityClicks() {
+        firebaseAuth =FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setCanceledOnTouchOutside(false);
+        binding.setClickHandle(new ResisterUserActivityClicks() {
             @Override
             public void backBtnClick() {
                 onBackPressed();
@@ -87,6 +106,7 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
             @Override
             public void resisterBtnClick() {
                 //resister user
+                inputData();
             }
 
             @Override
@@ -96,6 +116,215 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
             }
         });
     }
+
+    String fullName, phoneNumber, country, state, city, address, email, password, confirmPassword;
+
+    private void inputData() {
+        fullName = binding.nameEt.getText().toString().trim();
+
+        phoneNumber = binding.phoneEt.getText().toString().trim();
+        country = binding.countryEt.getText().toString().trim();
+        state = binding.stateEt.getText().toString().trim();
+        city = binding.cityEt.getText().toString().trim();
+        address = binding.addressEt.getText().toString().trim();
+        email = binding.emailEt.getText().toString().trim();
+        password = binding.passwordEt.getText().toString().trim();
+        confirmPassword = binding.cPasswordEt.getText().toString().trim();
+        //validate
+        if (TextUtils.isEmpty(fullName)) {
+            Toast.makeText(this, "Enter Name...", Toast.LENGTH_SHORT).show();
+            binding.nameEt.requestFocus();
+            return;
+        }
+
+        if (phoneNumber.length() < 11) {
+            binding.phoneEt.setError("phone number should be 11 digits");
+        }
+        if (TextUtils.isEmpty(phoneNumber)) {
+            Toast.makeText(this, "Enter phone Number...", Toast.LENGTH_SHORT).show();
+            binding.phoneEt.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(country)) {
+            Toast.makeText(this, "Enter Country Name...", Toast.LENGTH_SHORT).show();
+            binding.countryEt.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(state)) {
+            Toast.makeText(this, "Enter state...", Toast.LENGTH_SHORT).show();
+            binding.stateEt.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(city)) {
+            Toast.makeText(this, "Enter city...", Toast.LENGTH_SHORT).show();
+            binding.cityEt.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(address)) {
+            Toast.makeText(this, "Enter address...", Toast.LENGTH_SHORT).show();
+            binding.addressEt.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Enter Email...", Toast.LENGTH_SHORT).show();
+            binding.emailEt.requestFocus();
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.emailEt.setError("Invalid Email Address");
+            binding.emailEt.requestFocus();
+            return;
+        }
+        if (password.length() < 6) {
+            binding.passwordEt.setError("password length should be 6 or above");
+            binding.passwordEt.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Enter Password...", Toast.LENGTH_SHORT).show();
+            binding.passwordEt.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(confirmPassword)) {
+            Toast.makeText(this, "Enter confirm password...", Toast.LENGTH_SHORT).show();
+            binding.cPasswordEt.requestFocus();
+            return;
+        }
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(this, "don't match password", Toast.LENGTH_SHORT).show();
+            binding.passwordEt.setError("password & confirm password should be same");
+            binding.cPasswordEt.setError("password & confirm password should be same");
+            binding.passwordEt.requestFocus();
+            binding.cPasswordEt.requestFocus();
+        }
+
+        createAccount();
+    }
+
+    private void createAccount() {
+        progressDialog.setMessage("Creating account...");
+        progressDialog.show();
+        //create account
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                progressDialog.dismiss();
+                saveFirebaseData();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(ResisterUserActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveFirebaseData() {
+        progressDialog.setMessage("saving account info..");
+        final String timestamp = "" + System.currentTimeMillis();
+        if (image_uri == null) {
+            //save Info Without Image
+            //setUp data to save
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("uid", "" + firebaseAuth.getUid());
+            hashMap.put("email", "" + email);
+            hashMap.put("name", "" + fullName);
+            hashMap.put("phone", "" + phoneNumber);
+            hashMap.put("country", "" + country);
+            hashMap.put("state", "" + state);
+            hashMap.put("city", "" + city);
+            hashMap.put("address", "" + address);
+            hashMap.put("latitude", "" + latitude);
+            hashMap.put("longitude", "" + longitude);
+            hashMap.put("timestamp", "" + timestamp);
+            hashMap.put("accountType", "" + "User");
+            hashMap.put("online", "" + "true");
+            hashMap.put("profileImage", "" + "");
+            //save data to database
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+            reference.child(firebaseAuth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    //database updated
+                    progressDialog.dismiss();
+                    startActivity(new Intent(ResisterUserActivity.this, MainUserActivity.class));
+                    finish();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    //failed database update
+                    progressDialog.dismiss();
+                    startActivity(new Intent(ResisterUserActivity.this, MainUserActivity.class));
+                    finish();
+                }
+            });
+
+
+        } else {
+            //save Info With Image
+
+            //name and path of image
+            String fileAndPathName = "profile_images/" + "" + firebaseAuth.getUid();
+            //upload image
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(fileAndPathName);
+            storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    //get url of uploded image
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uriTask.isSuccessful()) ;
+                    Uri downloadUri = uriTask.getResult();
+                    if (uriTask.isSuccessful()) {
+                        //setUp data to save
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("uid", "" + firebaseAuth.getUid());
+                        hashMap.put("email", "" + email);
+                        hashMap.put("name", "" + fullName);
+                        hashMap.put("phone", "" + phoneNumber);
+                        hashMap.put("country", "" + country);
+                        hashMap.put("state", "" + state);
+                        hashMap.put("city", "" + city);
+                        hashMap.put("address", "" + address);
+                        hashMap.put("latitude", "" + latitude);
+                        hashMap.put("longitude", "" + longitude);
+                        hashMap.put("timestamp", "" + timestamp);
+                        hashMap.put("accountType", "" + "User");
+                        hashMap.put("online", "" + "true");
+                        hashMap.put("profileImage", "" + downloadUri);//url of uploaded image
+                        //save data to database
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+                        reference.child(firebaseAuth.getUid()).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                //database updated
+                                progressDialog.dismiss();
+                                startActivity(new Intent(ResisterUserActivity.this, MainUserActivity.class));
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                //failed database update
+                                progressDialog.dismiss();
+                                startActivity(new Intent(ResisterUserActivity.this, MainUserActivity.class));
+                                finish();
+                            }
+                        });
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(ResisterUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+     }
+
     private void showImagePickDialog() {
         //option to display dialog
         String option[] = {"Camera","Gallery"};
@@ -137,8 +366,8 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
     }
     private void pickFromCamera(){
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.Images.Media.TITLE,"Temp_Image Tile");
-        contentValues.put(MediaStore.Images.Media.DESCRIPTION,"Temp_Image Description");
+        contentValues.put(MediaStore.Images.Media.TITLE,"Image Tile");
+        contentValues.put(MediaStore.Images.Media.DESCRIPTION," Image Description");
 
         image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
 
@@ -165,10 +394,10 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
             String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
             //set Address
-            activityResisterUserBinding.countryEt.setText(country);
-            activityResisterUserBinding.stateEt.setText(state);
-            activityResisterUserBinding.cityEt.setText(city);
-            activityResisterUserBinding.addressEt.setText(address);
+            binding.countryEt.setText(country);
+            binding.stateEt.setText(state);
+            binding.cityEt.setText(city);
+            binding.addressEt.setText(address);
         }catch (Exception e){
             Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -280,10 +509,11 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
                 //get picked image
                 image_uri = data.getData();
                 //set to imageView
-                activityResisterUserBinding.profileIv.setImageURI(image_uri);
+                binding.profileIv.setImageURI(image_uri);
             }else if (requestCode==IMAGE_PICK_CAMERA_CODE){
                 //set to imageView
-                activityResisterUserBinding.profileIv.setImageURI(image_uri);
+                image_uri = data.getData();
+                binding.profileIv.setImageURI(image_uri);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
