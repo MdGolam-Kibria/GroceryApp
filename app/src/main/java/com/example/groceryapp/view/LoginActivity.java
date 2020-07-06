@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.groceryapp.R;
+import com.example.groceryapp.commands.LoginActivityClicks;
 import com.example.groceryapp.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
@@ -17,22 +18,22 @@ ActivityLoginBinding activityLoginBinding;
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_login);
         activityLoginBinding = DataBindingUtil.setContentView(this,R.layout.activity_login);
-        activityLoginBinding.noAccountTv.setOnClickListener(new View.OnClickListener() {
+        activityLoginBinding.setClick(new LoginActivityClicks() {
             @Override
-            public void onClick(View v) {
+            public void onClickLoginButton() {
+
+            }
+
+            @Override
+            public void onClickResisterUserButton() {
                 startActivity(new Intent(LoginActivity.this,ResisterUserActivity.class));
             }
-        });
-        activityLoginBinding.forgotTv.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
+            public void onClickForgotTv() {
                 startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
+
             }
         });
-
-
-
-
-        //////////////////////13:44
     }
 }
