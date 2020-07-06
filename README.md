@@ -1,4 +1,4 @@
 # GroceryApp
 GroceryApp like e-commerce application
 
-##USE MVVM pattern
+##USE MVVM pattern using DataBinding.
