@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<data>
+    <variable
+        name="user"
+        type="com.example.groceryapp.model.User" />
+    <variable
+        name="click"
+        type="com.example.groceryapp.commands.LoginActivityClicks" />
+</data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        tools:context=".view.LoginActivity">
+        <!--ToolBar-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/shaperect01">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="login"
+                android:textColor="#FFFFFF"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iconIv"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/shape_circle01"
+            android:padding="5dp"
+            android:src="@drawable/ic_key_white" />
+
+        <EditText
+            android:id="@+id/emailEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iconIv"
+            android:layout_margin="5dp"
+            android:background="@drawable/shapre_ret02"
+            android:drawableStart="@drawable/ic_mail_gray"
+            android:drawableLeft="@drawable/ic_mail_gray"
+            android:drawablePadding="8dp"
+            android:hint="Enter your Email"
+            android:inputType="textEmailAddress"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/passwordEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/emailEt"
+            android:layout_margin="5dp"
+            android:background="@drawable/shapre_ret02"
+            android:drawableStart="@drawable/ic_lock_gray"
+            android:drawableLeft="@drawable/ic_lock_gray"
+            android:drawablePadding="8dp"
+            android:hint="Enter your Password"
+            android:inputType="textPassword"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/forgotTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/passwordEt"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:text="Forgot Password" />
+
+        <Button
+            android:id="@+id/loginBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/forgotTv"
+            android:layout_centerHorizontal="true"
+            android:background="#0B4672"
+            android:onClick="@{(view)->click.onClickLoginButton()}"
+            android:minWidth="120dp"
+            android:text="login" />
+
+        <TextView
+            android:id="@+id/noAccountTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="118dp"
+            android:layout_marginRight="118dp"
+            android:layout_marginBottom="93dp"
+            android:text="Not Have Account? Resister" />
+
+    </RelativeLayout>
+</layout>
