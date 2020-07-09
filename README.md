@@ -4,4 +4,4 @@ GroceryApp like e-commerce application
 ##USE MVVM pattern using DataBinding.
 - add gps for tracking user current location.
 - add forgot password recovery features using user gmail address.
-- update user and seller details.
+- update user and seller details and Seller can customize her shop open or close.
