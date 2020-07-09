@@ -56,8 +56,9 @@ public class ResisterSellerActivity extends AppCompatActivity implements Locatio
     private static final int IMAGE_PICK_CAMERA_CODE = 500;
     //PERMISSION ARRAYS
     private String[] locationPermissions;
-    private String[] cameraPermissions;
-    private String[] storagePermissions;
+    //PERMISSION ARRAYS..
+    private String cameraPermission[];
+    private String storagePermission[];
     //image picked Uri
     private Uri image_uri;
     private double latitude, longitude;
@@ -72,8 +73,9 @@ public class ResisterSellerActivity extends AppCompatActivity implements Locatio
         binding = DataBindingUtil.setContentView(this, R.layout.activity_resister_seller);
         //init permission arrays
         locationPermissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
-        cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        //inti permission
+        cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait...");
@@ -376,15 +378,15 @@ public class ResisterSellerActivity extends AppCompatActivity implements Locatio
     }
 
     private void pickFromCamera() {
+
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.Images.Media.TITLE, "Temp_Image Tile");
-        contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Temp_Image Description");
+        contentValues.put(MediaStore.Images.Media.TITLE,"Image Title");
+        contentValues.put(MediaStore.Images.Media.DESCRIPTION,"Image Description");
 
-        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-
+        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
-        startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
+        startActivityForResult(intent,IMAGE_PICK_CAMERA_CODE);
     }
 
     @SuppressLint("MissingPermission")
@@ -416,8 +418,7 @@ public class ResisterSellerActivity extends AppCompatActivity implements Locatio
     }
 
     private boolean checkLocationPermission() {
-        boolean result = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) ==
+        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
                 (PackageManager.PERMISSION_GRANTED);
         return result;
     }
@@ -433,19 +434,17 @@ public class ResisterSellerActivity extends AppCompatActivity implements Locatio
     }
 
     private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
-    }
+        ActivityCompat.requestPermissions(this, storagePermission, STORAGE_REQUEST_CODE); }
 
     private boolean checkCameraPermission() {
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == (PackageManager.PERMISSION_GRANTED);
-        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == (PackageManager.PERMISSION_GRANTED);
-        return result && result1;
+        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
+        boolean result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+
+        return result && result2;
     }
 
     private void requestCameraPermission() {
-        ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this, cameraPermission, CAMERA_REQUEST_CODE);
     }
 
     @Override
@@ -488,7 +487,6 @@ public class ResisterSellerActivity extends AppCompatActivity implements Locatio
                     }
                 }
             }
-            break;
             case CAMERA_REQUEST_CODE: {
                 if (grantResults.length > 0) {
                     boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
@@ -502,7 +500,6 @@ public class ResisterSellerActivity extends AppCompatActivity implements Locatio
                     }
                 }
             }
-            break;
             case STORAGE_REQUEST_CODE: {
                 if (grantResults.length > 0) {
                     boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
@@ -515,22 +512,21 @@ public class ResisterSellerActivity extends AppCompatActivity implements Locatio
                     }
                 }
             }
-            break;
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == RESULT_OK) {
+        //handle image pick result
+        if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_PICK_GALLERY_CODE) {
-                //get picked image
+                //picked from gallery
                 image_uri = data.getData();
-                //set to imageView
+                //now set the image to imageView
                 binding.profileIv.setImageURI(image_uri);
             } else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
-                //set to imageView
-                image_uri = data.getData();
+                //picked from camera
                 binding.profileIv.setImageURI(image_uri);
             }
         }

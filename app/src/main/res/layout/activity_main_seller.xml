@@ -2,11 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<data>
-    <variable
-        name="clickhandle"
-        type="com.example.groceryapp.commands.MainSellerActivityClicks" />
-</data>
+
+    <data>
+
+        <variable
+            name="clickhandle"
+            type="com.example.groceryapp.commands.MainSellerActivityClicks" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,37 +17,76 @@
         <!--ToolBar-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/shaperect01">
-
-            <TextView
-                android:id="@+id/nameTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="Name"
-                android:textColor="#FFFFFF"
-                android:textSize="28sp"
-                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/logoutBtn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:onClick="@{(view)->clickhandle.logoutSeller()}"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:background="@null"
+                android:onClick="@{(view)->clickhandle.logoutSeller()}"
                 android:src="@drawable/ic_logout_white" />
+
             <ImageButton
                 android:id="@+id/editProfileBtn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:onClick="@{(view)->clickhandle.editSellerProfile()}"
                 android:layout_toStartOf="@id/logoutBtn"
+                android:layout_toLeftOf="@id/logoutBtn"
                 android:background="@null"
-                android:src="@drawable/ic_edit_white"
-                android:layout_toLeftOf="@id/logoutBtn" />
+                android:onClick="@{(view)->clickhandle.editSellerProfile()}"
+                android:src="@drawable/ic_edit_white" />
+                <!--Add product button-->
+            <ImageButton
+                android:id="@+id/addProductBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toStartOf="@id/editProfileBtn"
+                android:layout_toLeftOf="@id/editProfileBtn"
+                android:background="@null"
+                android:onClick="@{(view)->clickhandle.addProductBtn()}"
+                android:src="@drawable/ic_add_shopping_white" />
+
+            <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+                android:id="@+id/profileIv"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                app:c_border="true"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_store_gray"
+                app:c_border_color="#FFFFFF"
+                app:c_border_width="1dp"
+                android:layout_marginRight="10dp" />
+            <TextView
+                android:id="@+id/nameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_toEndOf="@id/profileIv"
+                android:layout_toRightOf="@id/profileIv" />
+            <TextView
+                android:id="@+id/shopNameTv"
+                android:text="Shop Name"
+                android:textColor="#FFFFFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nameTv"
+                android:layout_toEndOf="@id/profileIv"
+                android:layout_toRightOf="@id/profileIv" />
+            <TextView
+                android:id="@+id/emailTv"
+                android:text="Email"
+                android:textColor="#FFFFFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/shopNameTv"
+                android:layout_toEndOf="@id/profileIv"
+                android:layout_toRightOf="@id/profileIv" />
         </RelativeLayout>
     </RelativeLayout>
 </layout>

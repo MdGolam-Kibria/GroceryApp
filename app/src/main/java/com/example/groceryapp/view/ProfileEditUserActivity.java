@@ -76,6 +76,9 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_profile_edit_user);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_profile_edit_user);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setCanceledOnTouchOutside(false);
         firebaseAuth = FirebaseAuth.getInstance();
         checkUser();
         binding.setClickHandle(new EditUserProfileClicks() {

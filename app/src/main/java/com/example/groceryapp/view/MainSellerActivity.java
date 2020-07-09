@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -53,6 +54,12 @@ public class MainSellerActivity extends AppCompatActivity {
             public void editSellerProfile() {
                 //for edit seller profile...now open edit activity
                 startActivity(new Intent(MainSellerActivity.this,ProfileEditSellerActivity.class));
+            }
+
+            @Override
+            public void addProductBtn() {
+                //for add product...open add product activity.
+                startActivity(new Intent(MainSellerActivity.this,AddProductActivity.class));
             }
         });
     }
@@ -98,7 +105,17 @@ public class MainSellerActivity extends AppCompatActivity {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     String name = "" + ds.child("name").getValue();
                     String accountType = "" + ds.child("accountType").getValue();
+                    String email = ""+ds.child("email").getValue();
+                    String shopName = ""+ds.child("shopName").getValue();
+                    String profileImage = ""+ds.child("profileImage").getValue();
                     binding.nameTv.setText(name);
+                    binding.shopNameTv.setText(shopName);
+                    binding.emailTv.setText(email);
+                    try {
+                        Picasso.get().load(profileImage).placeholder(R.drawable.ic_store_gray).into(binding.profileIv);
+                    }catch (Exception e){
+                        binding.profileIv.setImageResource(R.drawable.ic_store_gray);
+                    }
                 }
             }
 
