@@ -58,8 +58,9 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
     private static final int IMAGE_PICK_CAMERA_CODE = 500;
     //PERMISSION ARRAYS
     private String[] locationPermissions;
-    private String[] cameraPermissions;
-    private String[] storagePermissions;
+    //PERMISSION ARRAYS..
+    private String cameraPermission[];
+    private String storagePermission[];
     //image picked Uri
     private Uri image_uri;
     private double latitude,longitude;
@@ -74,8 +75,8 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
         binding = DataBindingUtil.setContentView(this, R.layout.activity_resister_user);
         //init permission arrays
         locationPermissions =  new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
-        cameraPermissions =  new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        storagePermissions =  new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
         firebaseAuth =FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait");
@@ -140,6 +141,8 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
 
         if (phoneNumber.length() < 11) {
             binding.phoneEt.setError("phone number should be 11 digits");
+            binding.phoneEt.requestFocus();
+            return;
         }
         if (TextUtils.isEmpty(phoneNumber)) {
             Toast.makeText(this, "Enter phone Number...", Toast.LENGTH_SHORT).show();
@@ -418,18 +421,16 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
         return result;
     }
     private void requestStoragePermission(){
-        ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this,storagePermission,STORAGE_REQUEST_CODE);
     }
     private boolean checkCameraPermission(){
-        boolean result = ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)
-                ==(PackageManager.PERMISSION_GRANTED);
-        boolean result1 = ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)
-                ==(PackageManager.PERMISSION_GRANTED);
-        return result && result1;
+        boolean result = ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) ==(PackageManager.PERMISSION_GRANTED);
+        boolean result2 = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) ==(PackageManager.PERMISSION_GRANTED);
+        return result && result2;
     }
 
     private void requestCameraPermission(){
-        ActivityCompat.requestPermissions(this,cameraPermissions,CAMERA_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this,storagePermission,CAMERA_REQUEST_CODE);
     }
     @Override
     public void onLocationChanged(Location location) {
@@ -471,7 +472,6 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
                     }
                 }
             }
-            break;
             case CAMERA_REQUEST_CODE:{
                 if (grantResults.length>0){
                     boolean cameraAccepted = grantResults[0]==PackageManager.PERMISSION_GRANTED;
@@ -485,7 +485,6 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
                     }
                 }
             }
-            break;
             case STORAGE_REQUEST_CODE:{
                 if (grantResults.length>0){
                     boolean storageAccepted = grantResults[0]==PackageManager.PERMISSION_GRANTED;
@@ -498,25 +497,41 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
                     }
                 }
             }
-            break;
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        if (requestCode==RESULT_OK){
+//            if (requestCode==IMAGE_PICK_GALLERY_CODE){
+//                //get picked image
+//                image_uri = data.getData();
+//                //set to imageView
+//                binding.profileIv.setImageURI(image_uri);
+//            }else if (requestCode==IMAGE_PICK_CAMERA_CODE){
+//                //set to imageView
+////                image_uri = data.getData();
+////                Bundle bundle = data.getExtras();
+////                Bitmap bitmap = (Bitmap) bundle.get("data");
+//                binding.profileIv.setImageURI(image_uri);
+//            }
+//        }
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode==RESULT_OK){
-            if (requestCode==IMAGE_PICK_GALLERY_CODE){
-                //get picked image
+        //handle image pick result
+        if (resultCode == RESULT_OK) {
+            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
+                //picked from gallery
                 image_uri = data.getData();
-                //set to imageView
+                //now set the image to imageView
                 binding.profileIv.setImageURI(image_uri);
-            }else if (requestCode==IMAGE_PICK_CAMERA_CODE){
-                //set to imageView
-                image_uri = data.getData();
-                Bundle bundle = data.getExtras();
-                Bitmap bitmap = (Bitmap) bundle.get("data");
-                binding.profileIv.setImageBitmap(bitmap);
+            } else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+                //picked from camera
+                binding.profileIv.setImageURI(image_uri);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
