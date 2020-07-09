@@ -47,6 +47,12 @@ private FirebaseAuth firebaseAuth;
                 //go to login activity
                 makeMeOffline();
             }
+
+            @Override
+            public void editUserProfile() {
+                //for edit user profile...now open edit activity
+                startActivity(new Intent(MainUserActivity.this,ProfileEditUserActivity.class));
+            }
         });
     }
 

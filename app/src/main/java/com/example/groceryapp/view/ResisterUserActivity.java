@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -513,7 +514,9 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
             }else if (requestCode==IMAGE_PICK_CAMERA_CODE){
                 //set to imageView
                 image_uri = data.getData();
-                binding.profileIv.setImageURI(image_uri);
+                Bundle bundle = data.getExtras();
+                Bitmap bitmap = (Bitmap) bundle.get("data");
+                binding.profileIv.setImageBitmap(bitmap);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -48,6 +48,12 @@ public class MainSellerActivity extends AppCompatActivity {
                 //go to login activity
                 makeMeOffline();
             }
+
+            @Override
+            public void editSellerProfile() {
+                //for edit seller profile...now open edit activity
+                startActivity(new Intent(MainSellerActivity.this,ProfileEditSellerActivity.class));
+            }
         });
     }
 
@@ -92,7 +98,7 @@ public class MainSellerActivity extends AppCompatActivity {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     String name = "" + ds.child("name").getValue();
                     String accountType = "" + ds.child("accountType").getValue();
-                    binding.nameTv.setText(name + "(" + accountType + ")");
+                    binding.nameTv.setText(name);
                 }
             }
 

@@ -36,6 +36,15 @@
                 android:layout_alignParentRight="true"
                 android:background="@null"
                 android:src="@drawable/ic_logout_white" />
+            <ImageButton
+                android:id="@+id/editProfileBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="@{(view)->clickhandle.editSellerProfile()}"
+                android:layout_toStartOf="@id/logoutBtn"
+                android:background="@null"
+                android:src="@drawable/ic_edit_white"
+                android:layout_toLeftOf="@id/logoutBtn" />
         </RelativeLayout>
     </RelativeLayout>
 </layout>
