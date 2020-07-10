@@ -28,6 +28,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +38,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
     Context context;
     public ArrayList<ModelProduct> productsList, filterList;
     private FilterProducts filter;
-
+String image_path ;
     public AdapterProductSeller(Context context, ArrayList<ModelProduct> productsList) {
         this.context = context;
         this.productsList = productsList;
@@ -62,6 +63,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         String productCategory = modelProduct.getProductCategory();
         String productDescription = modelProduct.getProductDescription();
         String icon = modelProduct.getProductIcon();
+        image_path = icon;
         String quantity = modelProduct.getProductQuantity();
         String title = modelProduct.getProductTitle();
         String timeStamp = modelProduct.getTimestamp();
@@ -134,7 +136,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         descriptionTv.setText(productDescription);
         categoryTv.setText(productCategory);
         quantityTv.setText(quantity);
-        discountNoteTv.setText(discountNote+"%"+" OFF");
+        discountNoteTv.setText(discountNote + "%" + " OFF");
         discountedPriceTv.setText("$" + discountPrice);
         originalPriceTv.setText("$" + originalPrice);
 
@@ -199,8 +201,19 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
             @Override
             public void onSuccess(Void aVoid) {
                 //product deleted
-                //delete database storage image
+                //now delete database storage image
+                StorageReference reference1 = FirebaseStorage.getInstance().getReferenceFromUrl(image_path);//this is the image url..here image url is image path
+                reference1.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    //product image deleted...
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
 
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
