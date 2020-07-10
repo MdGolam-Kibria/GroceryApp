@@ -6,4 +6,5 @@ GroceryApp like e-commerce application
 - add forgot password recovery features using user gmail address.
 - update user and seller details and Seller can customize her shop open or close.
 - Seller can add her shop product with discount and without discounts ...The way he wants.
+- show seller products and implement category based filter for search a seller product.
 
