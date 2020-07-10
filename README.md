@@ -7,5 +7,5 @@ GroceryApp like e-commerce application
 - update user and seller details and Seller can customize her shop open or close.
 - Seller can add her shop product with discount and without discounts ...The way he wants.
 - show seller products and implement category based filter for search a seller product.
-- seller can update and delete her product any time..
+- seller can update and delete her product any time..if seller wish to delete and update her product.
 
