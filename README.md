@@ -5,3 +5,5 @@ GroceryApp like e-commerce application
 - add gps for tracking user current location.
 - add forgot password recovery features using user gmail address.
 - update user and seller details and Seller can customize her shop open or close.
+- Seller can add her shop product with discount and without discounts ...The way he wants.
+
