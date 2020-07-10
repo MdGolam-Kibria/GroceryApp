@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        app:cardElevation="3dp"
+        app:contentPadding="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+                android:id="@+id/shopIv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_store_gray"
+                app:c_border="true"
+                app:c_border_color="#0B4672"
+                app:c_border_width="1dp" />
+            <!--online / offline status-->
+            <ImageView
+                android:id="@+id/onlineIv"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/shape_circle03" />
+
+            <TextView
+                android:id="@+id/shopClosedTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/nextTv"
+                android:layout_toLeftOf="@+id/nextTv"
+                android:background="@drawable/shape_rect06"
+                android:padding="5dp"
+                android:text="Closed"
+                android:textColor="@color/red"
+                android:textSize="10sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/nextTv"
+                android:layout_toLeftOf="@id/nextTv"
+                android:layout_toEndOf="@id/shopIv"
+                android:layout_toRightOf="@id/shopIv"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/shopNameTv"
+                    android:layout_marginTop="5dp"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Shop Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/phoneTv"
+                    android:textColor="@color/black"
+                    android:text="phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/addressTv"
+                    android:textColor="@color/black"
+                    android:text="Address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:numStars="5"
+                    android:rating="3.5"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/nextTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_next_gray" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

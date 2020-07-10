@@ -48,21 +48,19 @@ public class SplashActivity extends AppCompatActivity {
         //if user is seller , start seller main screen
         //if user is buyer ,start user main screen
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.orderByChild("uid").equalTo(firebaseAuth.getUid())
+        reference.child(firebaseAuth.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot ds : snapshot.getChildren()) {
-                            String accountType = "" + ds.child("accountType").getValue();
-                            if (accountType.equals("Seller")) {
-                                //user is seller so..
-                                startActivity(new Intent(SplashActivity.this, MainSellerActivity.class));
-                                finish();
-                            } else {
-                                //user is buyer so.....
-                                startActivity(new Intent(SplashActivity.this, MainUserActivity.class));
-                                finish();
-                            }
+                        String accountType = "" + snapshot.child("accountType").getValue();
+                        if (accountType.equals("Seller")) {
+                            //user is seller so..
+                            startActivity(new Intent(SplashActivity.this, MainSellerActivity.class));
+                            finish();
+                        } else {
+                            //user is buyer so.....
+                            startActivity(new Intent(SplashActivity.this, MainUserActivity.class));
+                            finish();
                         }
                     }
 

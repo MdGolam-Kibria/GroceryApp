@@ -2,49 +2,138 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<data>
-    <variable
-        name="clickHandle"
-        type="com.example.groceryapp.commands.MainUserActivityClicks" />
-</data>
+
+    <data>
+
+        <variable
+            name="clickHandle"
+            type="com.example.groceryapp.commands.MainUserActivityClicks" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.MainUserActivity">
+        android:layout_height="match_parent">
         <!--ToolBar-->
         <RelativeLayout
+            android:id="@+id/toolBarRl"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/shaperect01">
-
-            <TextView
-                android:id="@+id/nameTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="Name"
-                android:textColor="#FFFFFF"
-                android:textSize="28sp"
-                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/logoutBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:background="@null"
                 android:onClick="@{(view)->clickHandle.logoutUser()}"
                 android:src="@drawable/ic_logout_white" />
+
             <ImageButton
                 android:id="@+id/editProfileBtn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:onClick="@{(view)->clickHandle.editUserProfile()}"
                 android:layout_toStartOf="@id/logoutBtn"
+                android:layout_toLeftOf="@id/logoutBtn"
                 android:background="@null"
-                android:src="@drawable/ic_edit_white"
-                android:layout_toLeftOf="@id/logoutBtn" />
+                android:onClick="@{(view)->clickHandle.editUserProfile()}"
+                android:src="@drawable/ic_edit_white" />
+
+            <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+                android:id="@+id/profileIv"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_store_gray"
+                app:c_border="true"
+                app:c_border_color="#FFFFFF"
+                app:c_border_width="1dp" />
+
+            <TextView
+                android:id="@+id/nameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/profileIv"
+                android:layout_toRightOf="@id/profileIv"
+                android:text="Name"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/emailTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nameTv"
+                android:layout_toEndOf="@id/profileIv"
+                android:layout_toRightOf="@id/profileIv"
+                android:text="Email"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/phoneTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/emailTv"
+                android:layout_toEndOf="@id/profileIv"
+                android:layout_toRightOf="@id/profileIv"
+                android:text="Phone"
+                android:textColor="#FFFFFF" />
+            <!--Tabs products and orders-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/profileIv"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_rect03"
+                android:orientation="horizontal">
+                <!--Shops-->
+                <TextView
+                    android:id="@+id/tabShopsTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect04"
+                    android:gravity="center"
+                    android:onClick="@{(view)->clickHandle.shopsTabClick()}"
+                    android:text="Shops"
+                    android:textColor="#000" />
+                <!--Orders-->
+                <TextView
+                    android:id="@+id/tabOrdersTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="@{(view)->clickHandle.orderTabsClick()}"
+                    android:text="Orders"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+
+        </RelativeLayout>
+        <!--shops UI-->
+        <RelativeLayout
+            android:id="@+id/shopRl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolBarRl">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shopRv"
+                android:layout_width="match_parent"
+                tools:listitem="@layout/row_shop"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+        <!--orders UI-->
+        <RelativeLayout
+            android:id="@+id/orderRl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolBarRl">
+
+
         </RelativeLayout>
     </RelativeLayout>
 </layout>

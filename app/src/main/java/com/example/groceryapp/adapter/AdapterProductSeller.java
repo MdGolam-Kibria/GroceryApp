@@ -38,7 +38,8 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
     Context context;
     public ArrayList<ModelProduct> productsList, filterList;
     private FilterProducts filter;
-String image_path ;
+    String image_path;
+
     public AdapterProductSeller(Context context, ArrayList<ModelProduct> productsList) {
         this.context = context;
         this.productsList = productsList;
@@ -206,7 +207,7 @@ String image_path ;
                 reference1.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                    //product image deleted...
+                        //product image deleted...
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
