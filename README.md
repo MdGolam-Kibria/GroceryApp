@@ -9,4 +9,4 @@ GroceryApp like e-commerce application
 - show seller products and implement category based filter for search a seller product.
 - seller can update and delete her product any time..if seller wish to delete and update her product.
 - display list of shops..display nearby shops, filter by using user's city..
-
+- user can show all shop in her city
