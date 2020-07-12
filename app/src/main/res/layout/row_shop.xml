@@ -37,8 +37,8 @@
                 android:layout_toStartOf="@+id/nextTv"
                 android:layout_toLeftOf="@+id/nextTv"
                 android:background="@drawable/shape_rect06"
-                android:padding="5dp"
                 android:text="Closed"
+                android:padding="5dp"
                 android:textColor="@color/red"
                 android:textSize="10sp" />
 

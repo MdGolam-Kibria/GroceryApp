@@ -84,6 +84,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
             //product is not on discount
             holder.discountedPriceTv.setVisibility(View.GONE);
             holder.discountNoteTv.setVisibility(View.GONE);
+            holder.originalPriceTv.setPaintFlags(0);
         }
         try {
             Picasso.get().load(icon).placeholder(R.drawable.ic_add_shopping_primary).into(holder.productIconIv);
@@ -93,7 +94,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //handle item clicks show item details...(in Buttom sheet)
+                //handle item clicks show item details...(in Bottom sheet)
                 detailsBottomSheet(modelProduct);//here model products contains details of clicked product
 
             }

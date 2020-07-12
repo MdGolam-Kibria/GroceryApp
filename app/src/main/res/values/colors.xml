@@ -9,4 +9,5 @@
     <color name="gray">#716A6A</color>
     <color name="colorGreen">#71AA3C</color>
     <color name="red">#EB3F14</color>
+    <color name="toolbarColor">#0B4773</color>
 </resources>

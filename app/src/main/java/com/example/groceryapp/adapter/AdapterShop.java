@@ -1,6 +1,7 @@
 package com.example.groceryapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groceryapp.R;
 import com.example.groceryapp.model.ModelShop;
+import com.example.groceryapp.view.ShopDetailsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
         String online = modelShop.getOnline();
         String name = modelShop.getName();
         String phone = modelShop.getPhone();
-        String uid = modelShop.getUid();
+        final String uid = modelShop.getUid();
         String timestamp = modelShop.getTimestamp();
         String shopOpen = modelShop.getShopOpen();
         String state = modelShop.getState();
@@ -76,6 +78,15 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
         }catch (Exception e){
             holder.shopIv.setImageResource(R.drawable.ic_store_gray);
         }
+        //handle click listner show shop details
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ShopDetailsActivity.class);
+                intent.putExtra("shopUid",uid);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
