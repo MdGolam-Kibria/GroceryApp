@@ -20,7 +20,8 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".view.ShopDetailsActivity"></activity>
+        <activity android:name=".view.ShopDetailsActivity"
+            android:windowSoftInputMode="stateHidden"/><!--hide keyboard by default for this activity-->
         <activity android:name=".view.EditProductActivity" />
         <activity android:name=".view.AddProductActivity" />
         <activity android:name=".view.ProfileEditSellerActivity" />
