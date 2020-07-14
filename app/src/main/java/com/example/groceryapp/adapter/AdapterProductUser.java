@@ -214,8 +214,6 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
                 .addData("item_Quantity",quantity)
                 .doneDataAdding();
          Toast.makeText(context, "Added to cart...", Toast.LENGTH_SHORT).show();
-        Toast.makeText(context, "Added to cart..."+easyDB.getAllData(), Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
