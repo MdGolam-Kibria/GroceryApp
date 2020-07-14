@@ -125,7 +125,7 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
         String description = modelProduct.getProductDescription();
         String discountNote = modelProduct.getDiscountNote();
         String image = modelProduct.getProductIcon();
-        String price;
+        final String price;
         if (modelProduct.getDiscountAvailable().equals("true")) {
             price = modelProduct.getDiscountPrice();
             discountedNoteTv.setVisibility(View.VISIBLE);
@@ -172,6 +172,7 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
             @Override
             public void onClick(View v) {
                 if (quantity > 1) {//at least have one product in cart
+                    finalCost = finalCost-cost;
                     quantity--;
                     finalPriceTv.setText("$" + finalCost);//set total final cost of those product
                     quantityTv.setText("" + quantity);
@@ -182,11 +183,11 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
             @Override
             public void onClick(View v) {
                 String title = titleTv.getText().toString().trim();
-                String priceEach = originalPriceTv.getText().toString().trim().replace("$", "");
-                String price = finalPriceTv.getText().toString().trim().replace("$", "");
+                String priceEach = price;
+                String totalPrice = finalPriceTv.getText().toString().trim().replace("$", "");
                 String quantity = quantityTv.getText().toString().trim();
                 //now add to cart
-                addToCart(productId, title, priceEach, price, quantity);//add to database(SQL Lite)
+                addToCart(productId, title, priceEach, totalPrice, quantity);//add to database(SQL Lite)
                 dialog.dismiss();//here dialog off
 
             }
@@ -195,7 +196,7 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
 
     private int itemId = 1;//This is item id for store in database
 
-    private void addToCart(String productId, String title, String priceEach, String price, String quantity) {
+    private void addToCart(String productId, String title, String priceEach, String price, String quantity) {//add carted item to SQL Lite database
         itemId++;//prottekbar item add hobe  1 kore barbe itemId er value...
         EasyDB easyDB = EasyDB.init(context, "ITEMS_DB")//here "ITEMS_DB" is database name
                 .setTableName("ITEMS_TABLE")
@@ -206,14 +207,14 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
                 .addColumn(new Column("item_Price", new String[]{"text", "not null"}))
                 .addColumn(new Column("item_Quantity", new String[]{"text", "not null"}))
                 .doneTableColumn();
-        Boolean b = easyDB.addData("itemId",itemId)
-                .addData("item_PID",productId)
+        Boolean b = easyDB.addData("item_PID",productId)
                 .addData("item_Name",title)
                 .addData("item_Price_Each",priceEach)
                 .addData("item_Price",price)
                 .addData("item_Quantity",quantity)
                 .doneDataAdding();
-        Toast.makeText(context, "Added to cart...", Toast.LENGTH_SHORT).show();
+         Toast.makeText(context, "Added to cart...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Added to cart..."+easyDB.getAllData(), Toast.LENGTH_SHORT).show();
 
     }
 

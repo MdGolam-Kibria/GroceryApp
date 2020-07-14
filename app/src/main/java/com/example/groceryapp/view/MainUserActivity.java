@@ -142,7 +142,7 @@ public class MainUserActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    //get user dat
+                    //get user data
                     String name = "" + ds.child("name").getValue();
                     String email = "" + ds.child("email").getValue();
                     String phone = "" + ds.child("phone").getValue();

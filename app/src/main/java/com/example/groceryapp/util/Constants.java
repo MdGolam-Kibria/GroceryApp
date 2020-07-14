@@ -1,6 +1,7 @@
 package com.example.groceryapp.util;
 
 public class Constants {
+    public static  final String MY_PREFS_NAME = "cart_data";
     //product categories
     public static final String[] PRODUCT_CATEGORY = {
             "Beverages",

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorGray00"
+    android:padding="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<TextView
+    android:id="@+id/itemTitleTv"
+    android:text="Item Title"
+    android:textColor="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/itemPriceTv"
+        android:layout_below="@+id/itemTitleTv"
+        android:text="10"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itemTitleTv"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:id="@+id/itemPriceEachTv"
+            android:layout_gravity="center"
+            android:text="10/KG"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/itemQuantityTv"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[2]"
+            android:textColor="@color/black"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/itemRemoveTv"
+        android:layout_below="@+id/itemTitleTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove"
+        android:textColor="@color/red"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
+    <View
+        android:layout_below="@+id/itemRemoveTv"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/green"
+        android:layout_marginTop="4dp"/>
+</RelativeLayout>
