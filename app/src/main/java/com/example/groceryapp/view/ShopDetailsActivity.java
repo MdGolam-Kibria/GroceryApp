@@ -64,7 +64,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_shop_details);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shop_details);
-        shopUid = getIntent().getStringExtra("shopUid");//get uid of the shop from intent.
+        shopUid = getIntent().getStringExtra("shopUid");//get uid of the shop from intent.adapterShop.class
         firebaseAuth = FirebaseAuth.getInstance();
         //init..progress dialog
         progressDialog = new ProgressDialog(this);
@@ -152,7 +152,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 .addColumn(new Column("item_Quantity", new String[]{"text", "not null"}))
                 .doneTableColumn();
         easyDB.deleteAllDataFromTable();//delete all records from cart when open this activity
-        Toast.makeText(this, "Delete previous data", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Delete previous data", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -217,7 +217,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         sTotalTv.setText("$" + String.format("%.2f", allTotalPrice));
         allTotalPriceTv.setText("$" + (allTotalPrice + Double.parseDouble(deliveryFee.replace("$", ""))));
         //for show dialog
-        AlertDialog dialog = builder.create();
+        final AlertDialog dialog = builder.create();
         dialog.show();
         //reset total price on dialog dismiss
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -247,14 +247,15 @@ public class ShopDetailsActivity extends AppCompatActivity {
                     Toast.makeText(ShopDetailsActivity.this, "No Item In Cart", Toast.LENGTH_LONG).show();
                     return;
                 }
-                submitOrder();
+                submitOrder(dialog);
+
             }
         });
 
 
     }
 
-    private void submitOrder() {//for order submitting
+    private void submitOrder(final AlertDialog dialog) {//for order submitting
         progressDialog.setMessage("Placing Order...");
         progressDialog.show();
         final String timestamp = "" + System.currentTimeMillis();//for order id and order time
@@ -292,6 +293,8 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 }
                 progressDialog.dismiss();
                 Toast.makeText(ShopDetailsActivity.this, "Order Placed Successfully...", Toast.LENGTH_SHORT).show();
+               deleteCartData();
+               dialog.dismiss();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

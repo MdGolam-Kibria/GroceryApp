@@ -187,7 +187,7 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
                 String totalPrice = finalPriceTv.getText().toString().trim().replace("$", "");
                 String quantity = quantityTv.getText().toString().trim();
                 //now add to cart
-                addToCart(productId, title, priceEach, totalPrice, quantity);//add to database(SQL Lite)
+                addToCart(productId, title, priceEach, totalPrice, quantity);//add to database(SQL Lite)/////////////////////////////////
                 dialog.dismiss();//here dialog off
 
             }
