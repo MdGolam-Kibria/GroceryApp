@@ -13,3 +13,4 @@ GroceryApp like e-commerce application
 - add Shop Details ....user can show all seller products with shopkeeper name and  details...with user can<br/> call to shopkeeper and show shopkeeper location in google map.
 usign <b>GPS</b>.
 - user can add her choosen product to <b>Cart </b>.... I have used this library for this purpose for <b>SQL Lite</b> operations..@https://github.com/MdGolam-Kibria/AndroidEasySQL-Library  <br/>
+- show all Order summary to user.user can show her previous and recently orderd products.
