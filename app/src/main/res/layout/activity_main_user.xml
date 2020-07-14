@@ -117,14 +117,15 @@
             android:id="@+id/shopRl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/toolBarRl">
+            android:layout_below="@+id/toolBarRl"
+            android:visibility="gone">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/shopRv"
                 android:layout_width="match_parent"
-                tools:listitem="@layout/row_shop"
+                android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_height="match_parent" />
+                tools:listitem="@layout/row_shop" />
         </RelativeLayout>
         <!--orders UI-->
         <RelativeLayout
@@ -133,7 +134,13 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/toolBarRl">
 
-
+            <!--Recyclerview: showOrder-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/orderRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/row_order_user" />
         </RelativeLayout>
     </RelativeLayout>
 </layout>

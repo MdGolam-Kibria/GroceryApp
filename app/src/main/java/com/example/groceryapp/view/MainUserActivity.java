@@ -11,10 +11,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.groceryapp.R;
+import com.example.groceryapp.adapter.AdapterOrderUser;
 import com.example.groceryapp.adapter.AdapterShop;
 import com.example.groceryapp.commands.MainSellerActivityClicks;
 import com.example.groceryapp.commands.MainUserActivityClicks;
 import com.example.groceryapp.databinding.ActivityMainUserBinding;
+import com.example.groceryapp.model.ModelOrderUser;
 import com.example.groceryapp.model.ModelShop;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +38,8 @@ public class MainUserActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ArrayList<ModelShop> shopList;
     private AdapterShop adapterShop;
+    private ArrayList<ModelOrderUser> orderList;
+    private AdapterOrderUser adapterOrderUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,48 @@ public class MainUserActivity extends AppCompatActivity {
             public void orderTabsClick() {
                 //show order
                 showOrderUI();
+                loadOrders();
+            }
+        });
+    }
+
+    private void loadOrders() {
+        orderList = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                orderList.clear();
+                for (final DataSnapshot ds : snapshot.getChildren()) {
+                    String uid = "" + ds.getRef().getKey();
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("Orders");
+                    reference.orderByChild("orderBy").equalTo(firebaseAuth.getUid())
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (ds.exists()) {
+                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                                ModelOrderUser modelOrderUser = ds.getValue(ModelOrderUser.class);
+                                                //now add to list
+                                            orderList.add(modelOrderUser);
+                                        }
+                                        //setup adapter
+                                        adapterOrderUser = new AdapterOrderUser(MainUserActivity.this,orderList);
+                                        binding.orderRv.setAdapter(adapterOrderUser);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -180,15 +226,15 @@ public class MainUserActivity extends AppCompatActivity {
                 //clear list before adding
                 shopList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                        ModelShop modelShop = ds.getValue(ModelShop.class);
-                        String shoCity = ""+ds.child("city").getValue();
-                        //show only user city shops
-                    if (shoCity.equals(userCity)){//mane user jei city te thakbe sei city er shop gula ke dekhabe
+                    ModelShop modelShop = ds.getValue(ModelShop.class);
+                    String shoCity = "" + ds.child("city").getValue();
+                    //show only user city shops
+                    if (shoCity.equals(userCity)) {//mane user jei city te thakbe sei city er shop gula ke dekhabe
                         shopList.add(modelShop);//if i want do show all shops skip this if().. statement just add  "shopList.add(modelShop);"
                     }
                 }
                 //setUp adapter
-                adapterShop = new AdapterShop(MainUserActivity.this,shopList);//set data to adapter
+                adapterShop = new AdapterShop(MainUserActivity.this, shopList);//set data to adapter
                 binding.shopRv.setAdapter(adapterShop);
             }
 
