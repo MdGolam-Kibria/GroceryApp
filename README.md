@@ -14,3 +14,4 @@ GroceryApp like e-commerce application
 usign <b>GPS</b>.
 - user can add her choosen product to <b>Cart </b>.... I have used this library for this purpose for <b>SQL Lite</b> operations..@https://github.com/MdGolam-Kibria/AndroidEasySQL-Library  <br/>
 - show all Order summary to user.user can show her previous and recently orderd products.
+- show  cart item number in cart logo.
