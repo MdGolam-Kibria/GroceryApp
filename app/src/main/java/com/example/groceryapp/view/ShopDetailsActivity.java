@@ -58,6 +58,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
     private ArrayList<ModelCartItem> cartItemList;
     private AdapterCartItem adapterCartItem;
     private ProgressDialog progressDialog;
+    private EasyDB easyDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +74,20 @@ public class ShopDetailsActivity extends AppCompatActivity {
         loadMyInfo();
         loadShopDetails();
         loadShopProducts();
+        //declare it to class level  inside onCreate
+         easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")//here "ITEMS_DB" is database name
+                .setTableName("ITEMS_TABLE")
+                .addColumn(new Column("item_Id", new String[]{"text", "unique"}))
+                .addColumn(new Column("item_PID", new String[]{"text", "not null"}))
+                .addColumn(new Column("item_Name", new String[]{"text", "not null"}))
+                .addColumn(new Column("item_Price_Each", new String[]{"text", "not null"}))
+                .addColumn(new Column("item_Price", new String[]{"text", "not null"}))
+                .addColumn(new Column("item_Quantity", new String[]{"text", "not null"}))
+                .doneTableColumn();
         //each shop have its own products and order so user add items to cart and go back and open cart in  different shop then cart should be different
         //show at first delete cart data whenever user open this activity..
         deleteCartData();
+        cartCount();
         //search
         binding.searchProductEt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -142,18 +154,21 @@ public class ShopDetailsActivity extends AppCompatActivity {
     }
 
     private void deleteCartData() {
-        EasyDB easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")//here "ITEMS_DB" is database name
-                .setTableName("ITEMS_TABLE")
-                .addColumn(new Column("item_Id", new String[]{"text", "unique"}))
-                .addColumn(new Column("item_PID", new String[]{"text", "not null"}))
-                .addColumn(new Column("item_Name", new String[]{"text", "not null"}))
-                .addColumn(new Column("item_Price_Each", new String[]{"text", "not null"}))
-                .addColumn(new Column("item_Price", new String[]{"text", "not null"}))
-                .addColumn(new Column("item_Quantity", new String[]{"text", "not null"}))
-                .doneTableColumn();
         easyDB.deleteAllDataFromTable();//delete all records from cart when open this activity
         //Toast.makeText(this, "Delete previous data", Toast.LENGTH_SHORT).show();
-
+    }
+    public void cartCount(){
+        //keep it public so we can access in adapter
+        //get cart count
+        int count = easyDB.getAllData().getCount();
+        if (count<=0){
+            //no any item in cart so hide cart item count TextView
+            binding.cartCountTv.setVisibility(View.GONE);
+        }else {
+            //have item so so int cart item textView
+            binding.cartCountTv.setVisibility(View.VISIBLE);
+            binding.cartCountTv.setText(""+count);//concatenate with string cause we cant set int value in view
+        }
     }
 
     public double allTotalPrice = 0.0;
@@ -294,6 +309,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 Toast.makeText(ShopDetailsActivity.this, "Order Placed Successfully...", Toast.LENGTH_SHORT).show();
                deleteCartData();
+               cartCount();
                dialog.dismiss();
             }
         }).addOnFailureListener(new OnFailureListener() {
