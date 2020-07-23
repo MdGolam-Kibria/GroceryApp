@@ -101,6 +101,6 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.Holder
             itemRemoveTv = itemView.findViewById(R.id.itemRemoveTv);
 
         }
-    }//ok
+    }
 }
 
