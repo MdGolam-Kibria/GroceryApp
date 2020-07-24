@@ -208,7 +208,8 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
                 .addColumn(new Column("item_Price", new String[]{"text", "not null"}))
                 .addColumn(new Column("item_Quantity", new String[]{"text", "not null"}))
                 .doneTableColumn();
-        Boolean b = easyDB.addData("item_PID",productId)
+        Boolean b = easyDB.addData("item_Id",itemId)
+                .addData("item_PID",productId)
                 .addData("item_Name",title)
                 .addData("item_Price_Each",priceEach)
                 .addData("item_Price",price)

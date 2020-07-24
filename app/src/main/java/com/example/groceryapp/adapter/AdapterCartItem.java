@@ -72,11 +72,10 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.Holder
                 double deliveryFee = Double.parseDouble((((ShopDetailsActivity) context).deliveryFee.replace("$", "")));
                 double sTotalPrice = Double.parseDouble(String.format("%.2f", totalPrice)) - Double.parseDouble(String.format("%.2f", deliveryFee));
                 ((ShopDetailsActivity) context).allTotalPrice = 0.00;
-                ((ShopDetailsActivity) context).sTotalTv.setText("$"+String.format("%.2f",sTotalPrice));
-                ((ShopDetailsActivity) context).allTotalPriceTv.setText("$"+String.format("%.2f",Double.parseDouble(String.format("%.2f",totalPrice))));
-
+                ((ShopDetailsActivity) context).sTotalTv.setText("$" + String.format("%.2f", sTotalPrice));
+                ((ShopDetailsActivity) context).allTotalPriceTv.setText("$" + String.format("%.2f", Double.parseDouble(String.format("%.2f", totalPrice))));
                 //after removing cart item update the cart item count
-                ((ShopDetailsActivity)context).cartCount();
+                ((ShopDetailsActivity) context).cartCount();
             }
         });
 

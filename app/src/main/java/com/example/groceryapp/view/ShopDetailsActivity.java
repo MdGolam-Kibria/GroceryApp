@@ -215,7 +215,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
             allTotalPrice = allTotalPrice + Double.parseDouble(cost);
             ModelCartItem modelCartItem = new ModelCartItem(
-                    "" + "",
+                    "" + id,
                     "" + pId,
                     "" + name,
                     "" + price,
