@@ -227,6 +227,7 @@ public class ResisterUserActivity extends AppCompatActivity implements LocationL
 
     private void saveFirebaseData() {
         progressDialog.setMessage("saving account info..");
+        progressDialog.show();
         final String timestamp = "" + System.currentTimeMillis();
         if (image_uri == null) {
             //save Info Without Image
