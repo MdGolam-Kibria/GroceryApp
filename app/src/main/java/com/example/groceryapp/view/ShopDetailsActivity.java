@@ -75,7 +75,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         loadShopDetails();
         loadShopProducts();
         //declare it to class level  inside onCreate
-         easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")//here "ITEMS_DB" is database name
+        easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")//here "ITEMS_DB" is database name
                 .setTableName("ITEMS_TABLE")
                 .addColumn(new Column("item_Id", new String[]{"text", "unique"}))
                 .addColumn(new Column("item_PID", new String[]{"text", "not null"}))
@@ -157,17 +157,18 @@ public class ShopDetailsActivity extends AppCompatActivity {
         easyDB.deleteAllDataFromTable();//delete all records from cart when open this activity
         //Toast.makeText(this, "Delete previous data", Toast.LENGTH_SHORT).show();
     }
-    public void cartCount(){
+
+    public void cartCount() {
         //keep it public so we can access in adapter
         //get cart count
         int count = easyDB.getAllData().getCount();
-        if (count<=0){
+        if (count <= 0) {
             //no any item in cart so hide cart item count TextView
             binding.cartCountTv.setVisibility(View.GONE);
-        }else {
+        } else {
             //have item so so int cart item textView
             binding.cartCountTv.setVisibility(View.VISIBLE);
-            binding.cartCountTv.setText(""+count);//concatenate with string cause we cant set int value in view
+            binding.cartCountTv.setText("" + count);//concatenate with string cause we cant set int value in view
         }
     }
 
@@ -275,14 +276,18 @@ public class ShopDetailsActivity extends AppCompatActivity {
         progressDialog.show();
         final String timestamp = "" + System.currentTimeMillis();//for order id and order time
         String cost = allTotalPriceTv.getText().toString().trim().replace("$", "");//remove $ if contains
+        //add lat long of user to each order | delete previous order from firebase or add manually to them
         //setup order data
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("orderId", "" + timestamp);
         hashMap.put("orderTime", timestamp);
         hashMap.put("orderStatus", "In Progress");//in progress/complete/cancelled
         hashMap.put("orderCost", cost);
+        hashMap.put("deliveryFee", deliveryFee);
         hashMap.put("orderBy", "" + firebaseAuth.getUid());
         hashMap.put("orderTo", "" + shopUid);
+        hashMap.put("latitude", "" + myLatitude);
+        hashMap.put("longitude", "" + myLongitude);
         //now add to database
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(shopUid).child("Orders");
         reference.child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -293,30 +298,35 @@ public class ShopDetailsActivity extends AppCompatActivity {
                     String pId = cartItemList.get(i).getPId();
                     String id = cartItemList.get(i).getId();
                     String cost = cartItemList.get(i).getCost();
-                    String name= cartItemList.get(i).getName();
+                    String name = cartItemList.get(i).getName();
                     String price = cartItemList.get(i).getPrice();
                     String quantity = cartItemList.get(i).getQuantity();
 
-                    HashMap<String,String> map = new HashMap<>();
-                    map.put("pId",pId);
-                    map.put("name",name);
-                    map.put("cost",cost);
-                    map.put("price",price);
-                    map.put("quantity",quantity);
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("pId", pId);
+                    map.put("name", name);
+                    map.put("cost", cost);
+                    map.put("price", price);
+                    map.put("quantity", quantity);
 
                     reference.child(timestamp).child("Items").child(pId).setValue(map);
                 }
                 progressDialog.dismiss();
                 Toast.makeText(ShopDetailsActivity.this, "Order Placed Successfully...", Toast.LENGTH_SHORT).show();
-               deleteCartData();
-               cartCount();
-               dialog.dismiss();
+                deleteCartData();
+                cartCount();
+                dialog.dismiss();
+                //after placing order open order details page
+                Intent intent = new Intent(ShopDetailsActivity.this, OrderDetailsUsersActivity.class);
+                intent.putExtra("orderTo", shopUid);
+                intent.putExtra("orderId", timestamp);
+                startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
-                Toast.makeText(ShopDetailsActivity.this, "Order Placed Failed..."+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShopDetailsActivity.this, "Order Placed Failed..." + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

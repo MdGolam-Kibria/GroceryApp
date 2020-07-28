@@ -4,11 +4,11 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="black">#000</color>
-    <color name="white">#FFFFFF</color>
     <color name="green">#3B963E</color>
     <color name="gray">#716A6A</color>
     <color name="colorGreen">#71AA3C</color>
     <color name="red">#EB3F14</color>
     <color name="toolbarColor">#0B4773</color>
     <color name="colorGray00">#F3EEEA</color>
+    <color name="white">#FFFFFF</color>
 </resources>
