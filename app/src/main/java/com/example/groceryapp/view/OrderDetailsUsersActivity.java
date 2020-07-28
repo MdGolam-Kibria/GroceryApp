@@ -40,8 +40,8 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(OrderDetailsUsersActivity.this, R.layout.activity_order_details_users);
         firebaseAuth = FirebaseAuth.getInstance();
-        Intent intent = getIntent();
-        orderTo = intent.getStringExtra("orderTo");//orderTo contains uid of the shop where we placed order
+        final Intent intent = getIntent();
+        orderTo = intent.getStringExtra("orderTo");//orderTo contains uid of the shop where we placed order("shopUid")
         orderId = intent.getStringExtra("orderId");
         loadShopInfo();
         loadOrderDetails();
@@ -50,6 +50,14 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
             @Override
             public void backBtnClick() {
                 onBackPressed();
+            }
+
+            @Override
+            public void writeReviewClick() {
+                //for send rate and review
+                Intent intent1 = new Intent(OrderDetailsUsersActivity.this,WriteReviewActivity.class);
+                intent1.putExtra("shopUid",orderTo);//ekhane jei shop e order korbe sei shop er order id dew ase "orderTo"
+                startActivity(intent1);
             }
         });
 
