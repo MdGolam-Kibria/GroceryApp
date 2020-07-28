@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="clickHandle"
+            type="com.example.groceryapp.commands.WriteReviewActivityClicks" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".view.WriteReviewActivity">
+        <!--Toolbar-->
+        <RelativeLayout
+            android:id="@+id/toolBarRl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shaperect01"
+            android:padding="10dp">
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:onClick="@{(view)->clickHandle.backBtnClick()}"
+                android:src="@drawable/ic_back_white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Order Details"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+        <!--shop image-->
+        <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+            android:id="@+id/profileIv"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/toolBarRl"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_store_gray"
+            app:c_border="true"
+            app:c_border_color="@color/toolbarColor"
+            app:c_border_width="2dp" />
+
+        <TextView
+            android:id="@+id/shopNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profileIv"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:text="Shop Name"
+            android:textColor="@color/toolbarColor"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/labelTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shopNameTv"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:text="How Was Your Experience With This Seller?\nYour Feedback is Important to Improve Our Quality of Services"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelTv"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:numStars="5" />
+
+        <EditText
+            android:id="@+id/reviewEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ratingBar"
+            android:layout_margin="10dp"
+            android:background="@drawable/shapre_ret02"
+            android:gravity="top"
+            android:hint="Type Review"
+            android:minHeight="100dp"
+            android:padding="10dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/submitBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@null"
+            android:backgroundTint="@color/toolbarColor"
+            android:onClick="@{(view)->clickHandle.sendReviewBtn()}"
+            android:src="@drawable/ic_done_white" />
+    </RelativeLayout>
+</layout>

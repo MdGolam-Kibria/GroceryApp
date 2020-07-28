@@ -20,7 +20,8 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".view.OrderDetailsUsersActivity"></activity>
+        <activity android:name=".view.WriteReviewActivity"></activity>
+        <activity android:name=".view.OrderDetailsUsersActivity" />
         <activity
             android:name=".view.ShopDetailsActivity"
             android:windowSoftInputMode="stateHidden" /> <!-- hide keyboard by default for this activity -->
