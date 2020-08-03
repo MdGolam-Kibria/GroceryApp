@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shaperect01">
+
             <ImageButton
                 android:id="@+id/logoutBtn"
                 android:layout_width="30dp"
@@ -49,6 +50,16 @@
                 android:background="@null"
                 android:onClick="@{(view)->clickhandle.addProductBtn()}"
                 android:src="@drawable/ic_add_shopping_white" />
+            <!--            Reviews: shop reviews-->
+            <ImageButton
+                android:id="@+id/reviewsBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="@{(view)->clickhandle.reviewsBtnClick()}"
+                android:layout_toStartOf="@id/addProductBtn"
+                android:layout_toLeftOf="@id/addProductBtn"
+                android:background="@color/toolbarColor"
+                android:src="@drawable/ic_starr_white" />
 
             <com.blogspot.atifsoftwares.circularimageview.CircularImageView
                 android:id="@+id/profileIv"
@@ -92,131 +103,131 @@
                 android:textColor="#FFFFFF" />
             <!--Tabs products and orders-->
             <LinearLayout
-                android:layout_below="@+id/profileIv"
-                android:background="@drawable/shape_rect03"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
+                android:layout_below="@+id/profileIv"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_rect03"
+                android:orientation="horizontal">
                 <!--Products-->
                 <TextView
                     android:id="@+id/tabProductsTv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Products"
-                    android:onClick="@{(view)->clickhandle.tabProductsClicks()}"
-                    android:background="@drawable/shape_rect04"
-                    android:textColor="#000"
                     android:layout_weight="1"
-                    android:gravity="center" />
-                    <!--Orders-->
+                    android:background="@drawable/shape_rect04"
+                    android:gravity="center"
+                    android:onClick="@{(view)->clickhandle.tabProductsClicks()}"
+                    android:text="Products"
+                    android:textColor="#000" />
+                <!--Orders-->
                 <TextView
                     android:id="@+id/tabOrdersTv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Orders"
-                    android:onClick="@{(view)->clickhandle.tabOrdersClicks()}"
-                    android:textColor="#ffffff"
                     android:layout_weight="1"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:onClick="@{(view)->clickhandle.tabOrdersClicks()}"
+                    android:text="Orders"
+                    android:textColor="#ffffff" />
 
             </LinearLayout>
         </RelativeLayout>
         <!--products-->
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/productsRl"
-            android:layout_below="@id/toolBarRl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolBarRl"
+            android:visibility="gone">
             <!--SearchView-->
             <EditText
                 android:id="@+id/searchProductEt"
-                android:layout_margin="5dp"
-                android:background="@drawable/shapre_ret02"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="10dp"
-                android:padding="10dp"
-                android:hint="Search"
+                android:layout_margin="5dp"
+                android:layout_toStartOf="@id/filterProductBtn"
+                android:layout_toLeftOf="@id/filterProductBtn"
+                android:background="@drawable/shapre_ret02"
                 android:drawableStart="@drawable/ic_search_gray"
                 android:drawableLeft="@drawable/ic_search_gray"
-                android:layout_toStartOf="@id/filterProductBtn"
-                android:layout_toLeftOf="@id/filterProductBtn" />
-                    <!--filter-->
+                android:drawablePadding="10dp"
+                android:hint="Search"
+                android:padding="10dp" />
+            <!--filter-->
             <ImageButton
                 android:id="@+id/filterProductBtn"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_marginTop="5dp"
-                android:onClick="@{(view)->clickhandle.filterProductBtnClick()}"
-                android:background="@null"
-                android:src="@drawable/ic_filter_gray"
-                android:scaleType="fitXY"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                android:background="@null"
+                android:onClick="@{(view)->clickhandle.filterProductBtnClick()}"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_filter_gray" />
             <!-- show filtered products title-->
             <TextView
                 android:id="@+id/filteredProductsTv"
-                android:layout_below="@id/searchProductEt"
-                android:textColor="@color/black"
-                android:text="Showing All"
-                android:layout_marginStart="5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp" />
-                <!--recyclerView: show products-->
+                android:layout_below="@id/searchProductEt"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="Showing All"
+                android:textColor="@color/black" />
+            <!--recyclerView: show products-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/productsRv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_below="@id/filteredProductsTv"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/row_product_seller"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                tools:listitem="@layout/row_product_seller" />
         </RelativeLayout>
         <!--orders-->
         <RelativeLayout
             android:id="@+id/ordersRl"
-            android:layout_below="@id/toolBarRl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolBarRl">
             <!--search and filter-->
 
             <TextView
                 android:id="@+id/filteredOrdersTv"
-                android:layout_margin="5dp"
-                android:background="@drawable/shapre_ret02"
-                android:padding="10dp"
-                android:text="Showing All Orders"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_toStartOf="@+id/filterOrderBtn"
-                android:layout_toLeftOf="@+id/filterOrderBtn" />
-<!--            filter orders-->
+                android:layout_toLeftOf="@+id/filterOrderBtn"
+                android:background="@drawable/shapre_ret02"
+                android:padding="10dp"
+                android:text="Showing All Orders" />
+            <!--            filter orders-->
             <ImageButton
                 android:id="@+id/filterOrderBtn"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:background="@null"
-                android:scaleType="fitXY"
-                android:onClick="@{(view)->clickhandle.filterOrderBtnclick()}"
-                android:src="@drawable/ic_filter_gray"
-                android:layout_marginTop="5dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp" />
-<!--            show order-->
+                android:layout_marginRight="5dp"
+                android:background="@null"
+                android:onClick="@{(view)->clickhandle.filterOrderBtnclick()}"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_filter_gray" />
+            <!--            show order-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ordersRv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/filteredOrdersTv"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/row_order_seller"
                 app:reverseLayout="true"
                 app:stackFromEnd="true"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                tools:listitem="@layout/row_order_seller" />
         </RelativeLayout>
     </RelativeLayout>
 </layout>
