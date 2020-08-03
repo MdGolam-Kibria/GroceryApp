@@ -7,4 +7,5 @@ public interface MainSellerActivityClicks {
     void tabProductsClicks();
     void tabOrdersClicks();
     void filterProductBtnClick();
+    void filterOrderBtnclick();
 }
