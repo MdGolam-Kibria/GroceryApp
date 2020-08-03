@@ -124,6 +124,7 @@
         </RelativeLayout>
         <!--products-->
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/productsRl"
             android:layout_below="@id/toolBarRl"
             android:layout_width="match_parent"
@@ -180,7 +181,42 @@
             android:layout_below="@id/toolBarRl"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <!--search and filter-->
 
+            <TextView
+                android:id="@+id/filteredOrdersTv"
+                android:layout_margin="5dp"
+                android:background="@drawable/shapre_ret02"
+                android:padding="10dp"
+                android:text="Showing All Orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/filterOrderBtn"
+                android:layout_toLeftOf="@+id/filterOrderBtn" />
+<!--            filter orders-->
+            <ImageButton
+                android:id="@+id/filterOrderBtn"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:onClick="@{(view)->clickhandle.filterOrderBtnclick()}"
+                android:src="@drawable/ic_filter_gray"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp" />
+<!--            show order-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ordersRv"
+                android:layout_below="@+id/filteredOrdersTv"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/row_order_seller"
+                app:reverseLayout="true"
+                app:stackFromEnd="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
         </RelativeLayout>
     </RelativeLayout>
 </layout>

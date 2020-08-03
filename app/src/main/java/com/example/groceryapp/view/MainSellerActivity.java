@@ -16,9 +16,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.groceryapp.R;
+import com.example.groceryapp.adapter.AdapterOrderShop;
 import com.example.groceryapp.adapter.AdapterProductSeller;
 import com.example.groceryapp.commands.MainSellerActivityClicks;
 import com.example.groceryapp.databinding.ActivityMainSellerBinding;
+import com.example.groceryapp.model.ModelOrderShop;
 import com.example.groceryapp.model.ModelProduct;
 import com.example.groceryapp.util.Constants;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,7 +42,9 @@ public class MainSellerActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private ArrayList<ModelProduct> productList;
+    private ArrayList<ModelOrderShop>orderShopArrayList;
     private AdapterProductSeller adapterProductSeller;
+    private AdapterOrderShop adapterOrderShop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,7 @@ public class MainSellerActivity extends AppCompatActivity {
         checkUser();
         loadAllProducts();
         showProductsUI();
+        loadAllOrders();
         //search
         binding.searchProductEt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -127,7 +132,55 @@ public class MainSellerActivity extends AppCompatActivity {
                 }).create().show();
 
             }
+
+            @Override
+            public void filterOrderBtnclick() {
+                final String options[] = {"All","In Progress","Complete","Cancelled"};
+                //dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
+                builder.setTitle("Filter Orders :")
+                        .setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which==0){
+                                    //all
+                                    binding.filteredOrdersTv.setText("Showing All");
+                                    adapterOrderShop.getFilter().filter("");//show all orders
+                                }else {
+                                    String optionClicked = options[which];
+                                    binding.filteredOrdersTv.setText("Showing "+optionClicked+" Orders");
+                                    adapterOrderShop.getFilter().filter(optionClicked);
+
+                                }
+                            }
+                        });
+                builder.create().show();
+            }
         });
+
+    }
+
+    private void loadAllOrders() {
+        orderShopArrayList = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(firebaseAuth.getUid()).child("Orders")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        orderShopArrayList.clear();
+                        for (DataSnapshot ds:snapshot.getChildren()){
+                            ModelOrderShop modelOrderShop = ds.getValue(ModelOrderShop.class);
+                            orderShopArrayList.add(modelOrderShop);
+                        }
+                        adapterOrderShop = new AdapterOrderShop(MainSellerActivity.this,orderShopArrayList);
+                        binding.ordersRv.setAdapter(adapterOrderShop);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     private void loadFilteredProducts(final String selected) {
