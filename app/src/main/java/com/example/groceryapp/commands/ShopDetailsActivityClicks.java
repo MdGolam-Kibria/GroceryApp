@@ -6,4 +6,5 @@ public interface ShopDetailsActivityClicks {
     void callBtn();
     void mapBtn();
     void filterProductbtn();
+    void reviewsBtnClick();
 }

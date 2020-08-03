@@ -11,4 +11,5 @@
     <color name="toolbarColor">#0B4773</color>
     <color name="colorGray00">#F3EEEA</color>
     <color name="white">#FFFFFF</color>
+    <color name="gray02">#4A4444</color>
 </resources>
