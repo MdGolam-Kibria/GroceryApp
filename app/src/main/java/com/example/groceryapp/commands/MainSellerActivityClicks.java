@@ -8,4 +8,5 @@ public interface MainSellerActivityClicks {
     void tabOrdersClicks();
     void filterProductBtnClick();
     void filterOrderBtnclick();
+    void reviewsBtnClick();
 }

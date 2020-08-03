@@ -1,6 +1,7 @@
 package com.example.groceryapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.groceryapp.R;
 import com.example.groceryapp.filter.FilterOrderShop;
 import com.example.groceryapp.model.ModelOrderShop;
+import com.example.groceryapp.view.OrderDetailsSellerActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,8 +48,8 @@ public class AdapterOrderShop extends RecyclerView.Adapter<AdapterOrderShop.Hold
     @Override
     public void onBindViewHolder(@NonNull HolderOrderShop holder, int position) {
         ModelOrderShop modelOrderShop = orderShopArrayList.get(position);
-        String orderId = modelOrderShop.getOrderId();
-        String orderBy = modelOrderShop.getOrderBy();
+        final String orderId = modelOrderShop.getOrderId();
+        final String orderBy = modelOrderShop.getOrderBy();
         String orderCost = modelOrderShop.getOrderCost();
         String orderStatus = modelOrderShop.getOrderStatus();
         String orderTime = modelOrderShop.getOrderTime();
@@ -80,7 +82,10 @@ public class AdapterOrderShop extends RecyclerView.Adapter<AdapterOrderShop.Hold
             @Override
             public void onClick(View v) {
                 //open Order details
-
+                Intent intent = new Intent(context, OrderDetailsSellerActivity.class);
+                intent.putExtra("orderId",orderId);//to load order info
+                intent.putExtra("orderBy",orderBy);//to load info of the user who placed order
+                context.startActivity(intent);
             }
         });
     }

@@ -42,7 +42,7 @@ public class MainSellerActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private ArrayList<ModelProduct> productList;
-    private ArrayList<ModelOrderShop>orderShopArrayList;
+    private ArrayList<ModelOrderShop> orderShopArrayList;
     private AdapterProductSeller adapterProductSeller;
     private AdapterOrderShop adapterOrderShop;
 
@@ -135,26 +135,34 @@ public class MainSellerActivity extends AppCompatActivity {
 
             @Override
             public void filterOrderBtnclick() {
-                final String options[] = {"All","In Progress","Complete","Cancelled"};
+                final String options[] = {"All", "In Progress", "Complete", "Cancelled"};
                 //dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
                 builder.setTitle("Filter Orders :")
                         .setItems(options, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if (which==0){
+                                if (which == 0) {
                                     //all
                                     binding.filteredOrdersTv.setText("Showing All");
                                     adapterOrderShop.getFilter().filter("");//show all orders
-                                }else {
+                                } else {
                                     String optionClicked = options[which];
-                                    binding.filteredOrdersTv.setText("Showing "+optionClicked+" Orders");
+                                    binding.filteredOrdersTv.setText("Showing " + optionClicked + " Orders");
                                     adapterOrderShop.getFilter().filter(optionClicked);
 
                                 }
                             }
                         });
                 builder.create().show();
+            }
+
+            @Override
+            public void reviewsBtnClick() {
+                //open same reviews activity as uses user review acivity
+                Intent intent = new Intent(MainSellerActivity.this, ShopReviewsActivity.class);
+                intent.putExtra("shopUid", "" + firebaseAuth.getUid());
+                startActivity(intent);
             }
         });
 
@@ -168,11 +176,11 @@ public class MainSellerActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         orderShopArrayList.clear();
-                        for (DataSnapshot ds:snapshot.getChildren()){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
                             ModelOrderShop modelOrderShop = ds.getValue(ModelOrderShop.class);
                             orderShopArrayList.add(modelOrderShop);
                         }
-                        adapterOrderShop = new AdapterOrderShop(MainSellerActivity.this,orderShopArrayList);
+                        adapterOrderShop = new AdapterOrderShop(MainSellerActivity.this, orderShopArrayList);
                         binding.ordersRv.setAdapter(adapterOrderShop);
                     }
 
