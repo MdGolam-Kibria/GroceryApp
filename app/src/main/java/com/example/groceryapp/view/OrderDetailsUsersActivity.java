@@ -55,8 +55,8 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
             @Override
             public void writeReviewClick() {
                 //for send rate and review
-                Intent intent1 = new Intent(OrderDetailsUsersActivity.this,WriteReviewActivity.class);
-                intent1.putExtra("shopUid",orderTo);//ekhane jei shop e order korbe sei shop er order id dew ase "orderTo"
+                Intent intent1 = new Intent(OrderDetailsUsersActivity.this, WriteReviewActivity.class);
+                intent1.putExtra("shopUid", orderTo);//ekhane jei shop e order korbe sei shop er order id dew ase "orderTo"
                 startActivity(intent1);
             }
         });
@@ -158,8 +158,8 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
             addresses = geocoder.getFromLocation(lat, lon, 1);
             String address = addresses.get(0).getAddressLine(0);//compete address
             binding.addressTv.setText(address);//set full address to view
-         } catch (Exception e) {
-            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }

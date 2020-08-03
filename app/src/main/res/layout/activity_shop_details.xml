@@ -93,6 +93,20 @@
                     android:text="Delivery Fee"
                     android:textColor="@color/white" />
 
+                <!--                rating bar show average ratings -->
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/deliveryFeeTv"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:numStars="5"
+                    android:progressBackgroundTint="@color/colorGray00"
+                    android:progressTint="@color/white"/>
+
+
                 <TextView
                     android:id="@+id/addressTv"
                     android:layout_width="wrap_content"
@@ -144,9 +158,9 @@
                 android:id="@+id/cartBtn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="8dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="8dp"
                 android:background="@null"
                 android:onClick="@{(view)->clickHandle.cartBtn()}"
                 android:src="@drawable/ic_cart_white" />
@@ -171,16 +185,26 @@
             <!--cart item count badge-->
             <TextView
                 android:id="@+id/cartCountTv"
-                android:textColor="@color/white"
-                android:text="18"
-                android:textSize="18sp"
-                android:gravity="center"
-                android:background="@drawable/shape_circle03"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true" />
-
+                android:layout_alignParentRight="true"
+                android:background="@drawable/shape_circle03"
+                android:gravity="center"
+                android:text="18"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+            <!--show shop reviews-->
+            <ImageView
+                android:id="@+id/reviewsBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/cartBtn"
+                android:layout_toLeftOf="@id/cartBtn"
+                android:background="@android:color/transparent"
+                android:onClick="@{(view)->clickHandle.reviewsBtnClick()}"
+                android:src="@drawable/ic_starr_white" />
         </RelativeLayout>
         <!--Products-->
         <RelativeLayout

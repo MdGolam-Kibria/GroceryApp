@@ -1,15 +1,8 @@
 package com.example.groceryapp.view;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,13 +14,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.groceryapp.R;
 import com.example.groceryapp.adapter.AdapterCartItem;
 import com.example.groceryapp.adapter.AdapterProductUser;
+import com.example.groceryapp.adapter.AdapterReview;
 import com.example.groceryapp.commands.ShopDetailsActivityClicks;
 import com.example.groceryapp.databinding.ActivityShopDetailsBinding;
 import com.example.groceryapp.model.ModelCartItem;
 import com.example.groceryapp.model.ModelProduct;
+import com.example.groceryapp.model.ModelReview;
 import com.example.groceryapp.util.Constants;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -63,7 +64,6 @@ public class ShopDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_shop_details);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shop_details);
         shopUid = getIntent().getStringExtra("shopUid");//get uid of the shop from intent.adapterShop.class
         firebaseAuth = FirebaseAuth.getInstance();
@@ -74,6 +74,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         loadMyInfo();
         loadShopDetails();
         loadShopProducts();
+        loadReviews();
         //declare it to class level  inside onCreate
         easyDB = EasyDB.init(ShopDetailsActivity.this, "ITEMS_DB")//here "ITEMS_DB" is database name
                 .setTableName("ITEMS_TABLE")
@@ -149,8 +150,43 @@ public class ShopDetailsActivity extends AppCompatActivity {
                     }
                 }).create().show();
             }
+
+            @Override
+            public void reviewsBtnClick() {//handle review btn click and show review activity
+                //pass shop uid to its review
+                Intent intent = new Intent(ShopDetailsActivity.this, ShopReviewsActivity.class);
+                intent.putExtra("shopUid", shopUid);
+                startActivity(intent);
+            }
         });
 
+    }
+
+    private float ratingSum = 0;
+
+    private void loadReviews() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(shopUid).child("Ratings")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ratingSum = 0;
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            float rating = Float.parseFloat("" + ds.child("ratings").getValue());//e.g 4.3
+                            ratingSum = ratingSum + rating;//for avg rating, add (addition of) all ratings later we will divide by number of reviews
+
+                        }
+                        long numberOfReviews = snapshot.getChildrenCount();
+                        float avgRatings = ratingSum / numberOfReviews;
+                        binding.ratingBar.setRating(avgRatings);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     private void deleteCartData() {
