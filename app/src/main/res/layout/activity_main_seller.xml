@@ -60,6 +60,16 @@
                 android:layout_toLeftOf="@id/addProductBtn"
                 android:background="@color/toolbarColor"
                 android:src="@drawable/ic_starr_white" />
+<!--            settings-->
+            <ImageButton
+                android:id="@+id/settingsBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="@{(view)->clickhandle.settingsBtnClicks()}"
+                android:src="@drawable/ic_settings_white"
+                android:layout_toStartOf="@+id/reviewsBtn"
+                android:background="@null"
+                android:layout_toLeftOf="@+id/reviewsBtn" />
 
             <com.blogspot.atifsoftwares.circularimageview.CircularImageView
                 android:id="@+id/profileIv"

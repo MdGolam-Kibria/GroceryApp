@@ -5,4 +5,5 @@ public interface MainUserActivityClicks {
     void editUserProfile();
     void shopsTabClick();
     void orderTabsClick();
+    void settingsBtnClicks();
 }

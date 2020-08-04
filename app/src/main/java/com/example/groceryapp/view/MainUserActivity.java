@@ -80,6 +80,11 @@ public class MainUserActivity extends AppCompatActivity {
                 showOrderUI();
                 loadOrders();
             }
+
+            @Override
+            public void settingsBtnClicks() {
+                startActivity(new Intent(MainUserActivity.this,SettingsActivity.class));
+            }
         });
     }
 
