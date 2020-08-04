@@ -15,4 +15,6 @@ usign <b>GPS</b>.
 - user can add her choosen product to <b>Cart </b>.... I have used this library for this purpose for <b>SQL Lite</b> operations..@https://github.com/MdGolam-Kibria/AndroidEasySQL-Library  <br/>
 - show all Order summary to user.user can show her previous and recently orderd products.
 - show  cart item number in cart logo with after confirm order send order data to admin.
-- count total cart item and count deleted cart 🛒 item.using easy sqllite database
+- count total cart item and count deleted cart 🛒 item.using easy sqllite database.
+- add <b>Notification</b> when a buyer buy a product then automatically send <b>Notification </b> to seller and at the same time when 
+    seller change order status the automatic send notification to buyer.
