@@ -128,7 +128,7 @@ public class AdapterOrderShop extends RecyclerView.Adapter<AdapterOrderShop.Hold
 
         public HolderOrderShop(@NonNull View itemView) {
             super(itemView);
-            orderIdTv = itemView.findViewById(R.id.orderDateTv);
+            orderIdTv = itemView.findViewById(R.id.orderIdTv);
             orderDateTv = itemView.findViewById(R.id.orderDateTv);
             emailTv = itemView.findViewById(R.id.emailTv);
             amountTv = itemView.findViewById(R.id.amountTv);
