@@ -164,6 +164,11 @@ public class MainSellerActivity extends AppCompatActivity {
                 intent.putExtra("shopUid", "" + firebaseAuth.getUid());
                 startActivity(intent);
             }
+
+            @Override
+            public void settingsBtnClicks() {
+                startActivity(new Intent(MainSellerActivity.this, SettingsActivity.class));
+            }
         });
 
     }

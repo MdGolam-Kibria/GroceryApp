@@ -20,7 +20,8 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".view.OrderDetailsSellerActivity"></activity>
+        <activity android:name=".view.SettingsActivity"></activity>
+        <activity android:name=".view.OrderDetailsSellerActivity" />
         <activity android:name=".view.ShopReviewsActivity" />
         <activity android:name=".view.WriteReviewActivity" />
         <activity android:name=".view.OrderDetailsUsersActivity" />

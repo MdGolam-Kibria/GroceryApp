@@ -39,6 +39,16 @@
                 android:background="@null"
                 android:onClick="@{(view)->clickHandle.editUserProfile()}"
                 android:src="@drawable/ic_edit_white" />
+            <!--            settings-->
+            <ImageButton
+                android:id="@+id/settingsBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="@{(view)->clickHandle.settingsBtnClicks()}"
+                android:src="@drawable/ic_settings_white"
+                android:layout_toStartOf="@+id/editProfileBtn"
+                android:background="@null"
+                android:layout_toLeftOf="@+id/editProfileBtn" />
 
             <com.blogspot.atifsoftwares.circularimageview.CircularImageView
                 android:id="@+id/profileIv"
