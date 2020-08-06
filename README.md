@@ -17,4 +17,4 @@ usign <b>GPS</b>.
 - show  cart item number in cart logo with after confirm order send order data to admin.
 - count total cart item and count deleted cart 🛒 item.using easy sqllite database.
 - add <b>Notification</b> when a buyer buy a product then automatically send <b>Notification </b> to seller and at the same time when 
-    seller change order status the automatic send notification to buyer . 
+    seller change order status the automatic send notification to buyer <b> custom Notificatio</b> . 
